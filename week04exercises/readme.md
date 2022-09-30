@@ -1,27 +1,41 @@
-# Lecture 4: Testing & Verification
+## Exercise week4
 
-## Goals
+### 4.1
 
-The goals of this lecture are:
+- Question 1
 
-* Identify main sources of errors in concurrent programs.
-* Design and implement tests to find errors in concurrent programs.
-* Explain, at a high level, the advantages of formal verification.
+  In this part, we check 2 safe properties
 
-## Readings
+  - If you try to insert twice the same element, the second insertion will return false, and the length of the set only add one
+  - If multile threads try to add the same element, there should be only one element successfully added
 
-* Goetz:
-  * Chapter 12, complete.
+  ConcurrentIntegerSetBuggy successfully passed the first test, but failed on the second one.
 
-### Optional readings
 
-* JUnit 5 documentation (*this reading is strongly recommneded if you are not familiar with unit testing*):
-  * [Writing tests](https://junit.org/junit5/docs/current/user-guide/#writing-tests)
+​	The set may add the same element twice.
 
-## Lecture slides
+- Question 2
 
-See file [lecture04.pdf](./lecture04.pdf).
+  The test is similiar to the second test from question 1. ConcurrentIntegerSetBuggy also failed on this test.
 
-## Exercises
+ 	the size of the set may be negative.
 
-See file [exercises04.pdf](./exercises04.pdf).
+- Question 3
+
+  To fix the errors above in ConcurrentIntegerSetSync, we use lock. Since there's data race/ race condition here, and the change of the set should be covered by a critical session. Maybe we can also use keyword synchronized here.
+
+  Our solution make sure that one time, only one thread can add/remove elements from the set. 
+
+- Question 4
+
+  there's no errors on oncurrentIntegerSetLibrary.
+
+- Question 5
+
+  Yes, because it violate the safety property of the concurrency. 
+
+- Quetsion 6
+
+  No, because there maybe other potential bugs.
+
+  
