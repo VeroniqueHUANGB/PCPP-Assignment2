@@ -10,13 +10,15 @@
   - If multile threads try to add the same element, there should be only one element successfully added
 
   ConcurrentIntegerSetBuggy successfully passed the first test, but failed on the second one.
+![截屏2022-09-30 上午2 45 08的副本](https://user-images.githubusercontent.com/95942789/193168982-575ccee8-90d8-44db-90fe-abb6d74f3200.png)
 
-
-​	The set may add the same element twice.
+  The set may add the same element twice.
 
 - Question 2
 
   The test is similiar to the second test from question 1. ConcurrentIntegerSetBuggy also failed on this test.
+  ![截屏2022-09-30 上午2 47 50](https://user-images.githubusercontent.com/95942789/193169129-99a32bcb-f926-4d1e-9054-ede29282a885.png)
+
 
  	the size of the set may be negative.
 
