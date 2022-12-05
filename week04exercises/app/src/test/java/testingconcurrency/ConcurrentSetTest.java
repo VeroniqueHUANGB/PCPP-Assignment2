@@ -40,57 +40,64 @@ public class ConcurrentSetTest {
     /**
      * Question 1
      */
-    @RepeatedTest(10)
-    @DisplayName("Add Duplicate Elimination")
-    public void testingBuggyAdd1() {
-        //System.out.printf("Duplication Elimination Test using Buggy Set");
-        Boolean res1 = setBuggy.add(1);
-        Boolean res2 = setBuggy.add(1);
+    @RepeatedTest(2000)
+    @DisplayName("Test add")
+    public void testAdd() throws Exception {
+        int nThreads = 100;
+        barrier = new CyclicBarrier(nThreads + 1);
 
-        assertEquals(true, res1);
-        assertEquals(false, res2);
-    }
+        for(int i = 0; i < nThreads; i++) {
+            new Thread(() -> {
+                try {
+                    barrier.await();
+                    setBuggy.add(1);
+                    barrier.await();
+                } catch (InterruptedException | BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
 
-
-    @RepeatedTest(100)
-    //@Test
-    @DisplayName("Multiple threads add")
-    public void testingBuggyAdd2() {
-        setBuggyAdd t1 = new setBuggyAdd();
-        setBuggyAdd t2 = new setBuggyAdd();
-
-        t1.start(); t2.start();
-
-        try{
-            t1.join();
-            t2.join();
-        } catch(InterruptedException e){
+        try {
+            barrier.await();
+            barrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
 
-        assertEquals(1,setBuggy.size());
+        assertEquals(1, setBuggy.size(), "set.size() == "+setBuggy.size()+", but we expected "+1);
     }
 
     /**
      * Question 2
      */
-    @RepeatedTest(1000)
-    public void testingRemove(){
+    @RepeatedTest(5000)
+    @DisplayName("Test remove")
+    public void testRemove() throws Exception {
+        int threads = 100;
         setBuggy.add(1);
+        var barrier = new CyclicBarrier(threads + 1);
 
-        setBuggyRemove t1 = new setBuggyRemove();
-        setBuggyRemove t2 = new setBuggyRemove();
+        for (int i = 0; i < threads; i++) {
+            new Thread(() -> {
+                try {
+                    barrier.await();
+                    setBuggy.remove(1);
+                    barrier.await();
+                } catch (Exception e) {
+                    throw new RuntimeException();
+                }
+            }).start();
+        }
 
-        t1.start(); t2.start();
-
-        try{
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e){
+        try {
+            barrier.await();
+            barrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
 
-        assertEquals(0, setBuggy.size());
+        assertEquals(0, setBuggy.size(), "set.size() == "+setBuggy.size()+", but we expected "+0);
     }
 
     /**

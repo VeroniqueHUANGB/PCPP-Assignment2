@@ -4,6 +4,8 @@ package testingconcurrency;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -43,7 +45,7 @@ class ConcurrentIntegerSetSync implements ConcurrentIntegerSet {
 	this.set = new HashSet<Integer>();
     }
 
-    public boolean add(Integer element) {
+    public boolean add(Integer element, CyclicBarrier done, AtomicInteger count) {
         lock.lock();
         try{
             res = set.add(element);
