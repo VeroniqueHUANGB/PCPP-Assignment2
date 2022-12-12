@@ -16,35 +16,37 @@ public class Person {
     public Person(int initialId){
         synchronized (Person.class){
             if (idCounter == 0){
-                this.id = initialId;
-                idCounter = initialId + 1;
+                //this.id = initialId;
+                //idCounter = initialId + 1;
+                idCounter = initialId;
             }
-            else{
-                this.id = idCounter;
-                idCounter++;
-            }
+            // else{
+            //     this.id = idCounter;
+            //     idCounter++;
+            // }
+            this.id = idCounter++;
         }
     }
 
-    public void setName(String name){
+    public synchronized void setName(String name){
         this.name = name;
     }
 
-    public void setZipAddress(int zip, String address){
+    public synchronized void setZipAddress(int zip, String address){
         this.zip = zip;
         this.address = address;
     }
 
-    public long getId(){
+    public synchronized long getId(){
         return id;
     }
-    public String getName(){
+    public synchronized String getName(){
         return name;
     }
-    public int getZip(){
+    public synchronized int getZip(){
         return zip;
     }
-    public String getAddress(){
+    public synchronized String getAddress(){
         return address;
     }
 
